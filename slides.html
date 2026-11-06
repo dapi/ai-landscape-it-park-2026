@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI-ландшафт и где мы сейчас — Данил Письменный</title>
+<style>
+@page { size: 13.333in 7.5in; margin: 0; }
+* { box-sizing: border-box; }
+:root { --ink:#17212b; --body:#2f3b47; --muted:#637083; --paper:#f7f6f2; --surface:#fff; --line:#d8d4c6; --blue:#1f4d7a; --blue2:#45688d; --signal:#b3492f; --yellow:#ffeb79; --green:#526e5b; }
+html,body { margin:0; background:#ddd; color:var(--ink); font-family:"Public Sans","Helvetica Neue",Arial,sans-serif; }
+.deck { display:block; }
+.slide { width:13.333in; height:7.5in; position:relative; overflow:hidden; background:var(--paper); page-break-after:always; padding:.62in .68in .55in; }
+.slide:last-child { page-break-after:auto; }
+@media screen { .slide { margin:20px auto; box-shadow:0 10px 40px #0002; } }
+h1,h2,h3,p { margin:0; }
+h1,h2 { font-family:"IBM Plex Mono","SFMono-Regular",Menlo,monospace; letter-spacing:-.045em; line-height:.98; }
+h1 { font-size:48pt; max-width:10.8in; }
+h2 { font-size:32pt; max-width:11.2in; }
+h3 { font:700 13pt "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.04em; }
+.kicker { font:700 10pt "IBM Plex Mono",monospace; color:var(--blue2); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.22in; }
+.lead { font-size:21pt; line-height:1.22; max-width:10.5in; color:var(--body); margin-top:.28in; }
+.small { font-size:10pt; line-height:1.35; color:var(--muted); }
+.footer { position:absolute; left:.68in; right:.68in; bottom:.25in; display:flex; justify-content:space-between; font:9pt "IBM Plex Mono",monospace; color:var(--muted); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:.28in; margin-top:.38in; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:.22in; margin-top:.35in; }
+.card { background:rgba(255,255,255,.88); border:1.5px solid var(--line); padding:.24in; min-height:1.35in; position:relative; }
+.card strong { font:700 18pt "IBM Plex Mono",monospace; display:block; margin-bottom:.1in; }
+.card p { font-size:13.5pt; line-height:1.28; color:var(--body); }
+.big-number { font:700 42pt "IBM Plex Mono",monospace; color:var(--blue); letter-spacing:-.06em; }
+.band { margin-top:.34in; padding:.25in .3in; border-left:8px solid var(--signal); background:#fff; font-size:22pt; line-height:1.18; font-weight:750; max-width:10.8in; }
+.sticky { position:absolute; width:1.62in; min-height:1.18in; padding:.16in; background:var(--yellow); box-shadow:0 8px 18px #17212b20; transform:rotate(-4deg); font:700 10pt/1.22 "IBM Plex Mono",monospace; color:var(--ink); overflow-wrap:anywhere; }
+.sticky.blue { background:#cfe3f5; transform:rotate(5deg); }
+.sticky.red { background:#f1c7b9; transform:rotate(-2deg); }
+.sticky.green { background:#d5e5d8; transform:rotate(3deg); }
+.card .sticky { bottom:-.42in; top:auto; min-height:.52in; width:1.25in; padding:.1in; font-size:9pt; text-align:center; }
+.doodle { position:absolute; opacity:.92; }
+.arrow { width:1.2in; height:.55in; border-bottom:4px solid var(--ink); transform:rotate(-8deg); }
+.arrow:after { content:""; position:absolute; right:-1px; bottom:-7px; width:16px; height:16px; border-right:4px solid var(--ink); border-bottom:4px solid var(--ink); transform:rotate(-45deg); }
+.dotgrid { background-image:radial-gradient(#17212b24 1.1px,transparent 1.1px); background-size:16px 16px; }
+.ladder { display:grid; grid-template-columns:repeat(5,1fr); gap:.12in; margin-top:.42in; align-items:end; }
+.step { border:2px solid var(--ink); padding:.16in; background:#fff; min-height:1.25in; }
+.step:nth-child(2){min-height:1.55in}.step:nth-child(3){min-height:1.85in}.step:nth-child(4){min-height:2.15in}.step:nth-child(5){min-height:2.45in;background:#e7eef5}
+.step b { display:block; font:700 14pt "IBM Plex Mono",monospace; margin-bottom:.08in; }
+.step span { font-size:10.5pt; line-height:1.25; color:var(--body); }
+.stack { margin-top:.35in; display:grid; grid-template-columns:1.15fr 1fr; gap:.35in; }
+.stackline { display:flex; align-items:center; gap:.16in; margin-bottom:.12in; }
+.stackline b { width:1.55in; font:700 12pt "IBM Plex Mono",monospace; }
+.stackline span { flex:1; background:#fff; border:1.5px solid var(--line); padding:.13in .17in; font-size:12pt; }
+.warning { background:#17212b; color:white; }
+.warning h2,.warning .kicker { color:white; }
+.warning .card { background:#222d38; border-color:#52606d; color:#fff; }
+.warning .card p { color:#dbe2e9; }
+.warning .footer { color:#aeb8c2; }
+.quote { font:700 29pt/1.12 "IBM Plex Mono",monospace; max-width:10.8in; margin-top:.46in; }
+.source { position:absolute; left:.68in; bottom:.55in; font-size:8.5pt; color:var(--muted); max-width:11.7in; }
+.checks { display:grid; grid-template-columns:repeat(3,1fr); gap:.2in; margin-top:.38in; }
+.check { border-top:5px solid var(--green); padding:.18in .12in; background:white; min-height:1.55in; }
+.check b { font:700 15pt "IBM Plex Mono",monospace; display:block; margin-bottom:.08in; }
+.check p { font-size:12pt; line-height:1.3; }
+.qr { width:2.05in; height:2.05in; background:#fff; padding:.1in; border:2px solid var(--ink); }
+.final { display:grid; grid-template-columns:1fr 2.45in; align-items:center; height:100%; gap:.6in; }
+.final h1 { font-size:64pt; }
+.final .url { font:700 18pt "IBM Plex Mono",monospace; margin-top:.28in; color:var(--blue); }
+.brandline { position:absolute; left:.68in; top:.26in; width:1.2in; height:5px; background:var(--blue); }
+</style>
+</head>
+<body><main class="deck">
+<section class="slide dotgrid">
+  <div class="brandline"></div><div class="kicker">IT Park · Казань · 6 ноября 2026</div>
+  <h1>AI-ландшафт<br>и где мы сейчас</h1>
+  <p class="lead">От чата с моделью — к агентам, которые видят контекст, используют инструменты и доводят работу до проверяемого результата.</p>
+  <div class="sticky" style="right:.65in;top:.7in">МОДЕЛЬ<br>≠ ПРОДУКТ</div>
+  <div class="sticky blue" style="right:1.05in;top:2.25in">КОНТЕКСТ<br>+ ИНСТРУМЕНТЫ</div>
+  <div class="sticky green" style="right:.55in;top:3.85in">ПРОВЕРКА<br>+ КОНТРОЛЬ</div>
+  <div class="footer"><span>Данил Письменный · предприниматель и ТехРук</span><span>01</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">01 · Почему это уже не «ещё один IT-тренд»</div><h2>AI стал массовой инфраструктурой работы</h2>
+  <div class="grid3">
+    <div class="card"><div class="big-number">88%</div><p>организаций сообщают об использовании AI — внедрение стало нормой, а не пилотом.</p></div>
+    <div class="card"><div class="big-number">53%</div><p>населения достиг генеративный AI примерно за три года — скорость диффузии беспрецедентна.</p></div>
+    <div class="card"><div class="big-number">×2</div><p>примерно каждые 7 месяцев рос горизонт задач, которые агенты способны завершать автономно.</p></div>
+  </div>
+  <div class="band">Главный вопрос уже не «пользоваться ли AI», а <u>как встроить его в систему работы</u>.</div>
+  <div class="sticky red" style="right:.5in;bottom:.78in">СКОРОСТЬ<br>РАСТЁТ</div>
+  <div class="source">Источники: Stanford AI Index 2026 [1]; METR Task-Completion Time Horizons [2].</div>
+  <div class="footer"><span>AI-ландшафт и где мы сейчас</span><span>02</span></div>
+</section>
+
+<section class="slide dotgrid">
+  <div class="kicker">02 · Карта рынка</div><h2>Пять этажей современного AI-ландшафта</h2>
+  <div class="ladder">
+    <div class="step"><b>1. Модели</b><span>Текст, код, изображение, аудио, рассуждение.</span></div>
+    <div class="step"><b>2. Интерфейсы</b><span>Чаты, IDE, голос, корпоративные приложения.</span></div>
+    <div class="step"><b>3. Контекст</b><span>Файлы, память, базы знаний, правила и роли.</span></div>
+    <div class="step"><b>4. Инструменты</b><span>Браузер, API, терминал, документы, CRM.</span></div>
+    <div class="step"><b>5. Агенты</b><span>Планируют, действуют, проверяют и оставляют след.</span></div>
+  </div>
+  <p class="lead" style="font-size:18pt">Ценность смещается вверх: от доступа к сильной модели — к качеству контекста, инструментов и управляемого процесса.</p>
+  <div class="footer"><span>Модель — двигатель. Система — автомобиль.</span><span>03</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">03 · Сдвиг интерфейса</div><h2>От «ответь мне» — к «сделай и покажи результат»</h2>
+  <div class="grid2">
+    <div class="card"><strong>Чат</strong><p>Вопрос → ответ. Пользователь сам переносит результат, проверяет и продолжает работу.</p><div class="sticky" style="left:.35in;bottom:-.48in;width:1.25in">СЛОВА</div></div>
+    <div class="card"><strong>Агент</strong><p>Цель → план → инструменты → действие → проверка → артефакт. Человек задаёт границы и принимает результат.</p><div class="sticky blue" style="right:.35in;bottom:-.48in;width:1.25in">ДЕЛО</div></div>
+  </div>
+  <div class="band">Агентность — не магия и не характер модели. Это <u>контур исполнения</u>.</div>
+  <div class="source">OpenAI разделяет прямые ответы модели, SDK для управляемых агентных циклов и runtime для длительных задач [4].</div>
+  <div class="footer"><span>Ответ становится побочным продуктом выполненной работы.</span><span>04</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">04 · Где мы сейчас технически</div><h2>Стек уже сложился — но ещё не стандартизировался</h2>
+  <div class="stack">
+    <div>
+      <div class="stackline"><b>Модели</b><span>быстро меняются; качество всё ближе, специализации различаются</span></div>
+      <div class="stackline"><b>Оркестрация</b><span>агентные SDK, маршрутизация, handoff, длительные задачи</span></div>
+      <div class="stackline"><b>Подключения</b><span>MCP и API соединяют приложения с данными, инструментами и workflow</span></div>
+      <div class="stackline"><b>Память</b><span>локальная, проектная, организационная; качество важнее объёма</span></div>
+      <div class="stackline"><b>Контроль</b><span>права, логи, тесты, согласования и воспроизводимость</span></div>
+    </div>
+    <div class="card"><strong>Узкое место</strong><p>Не интеллект модели, а устройство организации: где истина, кто владелец, что агенту разрешено и как доказать выполнение.</p></div>
+  </div>
+  <div class="source">MCP позиционируется как открытый стандарт соединения AI-приложений с внешними системами, данными, инструментами и workflow [5].</div>
+  <div class="footer"><span>Интеграция превращает интеллект в производительность.</span><span>05</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">05 · Что реально работает сегодня</div><h2>Лучший AI — внутри конкретного процесса</h2>
+  <div class="checks">
+    <div class="check"><b>Разработка</b><p>Исследовать код, внести изменение, запустить проверки, подготовить PR.</p></div>
+    <div class="check"><b>Операции</b><p>Разобрать входящие, обновить реестр, найти отклонение, эскалировать.</p></div>
+    <div class="check"><b>Документы</b><p>Собрать материал, сделать черновик, сверить факты, выпустить PDF.</p></div>
+    <div class="check"><b>Продажи</b><p>Исследовать компанию, подготовить персональный контакт, зафиксировать следующий шаг.</p></div>
+    <div class="check"><b>Руководитель</b><p>Свести контекст, предложить варианты, проверить решение на критерии.</p></div>
+    <div class="check"><b>Личный контур</b><p>Календарь, заметки, коммуникации и проекты — с едиными правилами.</p></div>
+  </div>
+  <div class="sticky green" style="right:.42in;top:.65in">НЕ ДЕМО.<br>WORKFLOW.</div>
+  <div class="footer"><span>Выбирайте повторяемую работу с ясной приёмкой.</span><span>06</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">06 · Реальное использование</div><h2>Автоматизация и усиление человека идут одновременно</h2>
+  <div class="grid2">
+    <div class="card"><div class="big-number">49%</div><p>автоматизация стала немного чаще усиления в одном из срезов Claude.ai 2025 года.</p></div>
+    <div class="card"><div class="big-number">77%</div><p>разговоров через бизнес-API показывали паттерны автоматизации, а не совместной итерации.</p></div>
+  </div>
+  <p class="quote">Чем ближе AI к производственному API, тем чаще ему делегируют выполнение — и тем важнее контроль.</p>
+  <div class="source">Anthropic Economic Index: географические и enterprise-паттерны использования [3]. Данные относятся к использованию Claude и не описывают весь рынок.</div>
+  <div class="footer"><span>Human-in-the-loop — архитектурный выбор, а не отсутствие прогресса.</span><span>07</span></div>
+</section>
+
+<section class="slide warning">
+  <div class="kicker">07 · Трезвая часть</div><h2>Агенты сильны — и системно ненадёжны</h2>
+  <div class="grid3">
+    <div class="card"><strong>Ошибаются</strong><p>Уверенно додумывают, теряют условия, выбирают неверный инструмент.</p></div>
+    <div class="card"><strong>Действуют</strong><p>Ошибка уже не только в тексте: она может изменить файл, данные или доступ.</p></div>
+    <div class="card"><strong>Масштабируются</strong><p>Плохой процесс с агентом выполняется быстрее и шире.</p></div>
+  </div>
+  <div class="band" style="color:var(--ink)">Нужны: минимальные права · подтверждение рискованных действий · журнал · тест · откат · человеческая приёмка.</div>
+  <div class="sticky red" style="right:.5in;bottom:.72in">ДОВЕРЯЙ,<br>НО ПРОВЕРЯЙ</div>
+  <div class="footer"><span>Безопасность — часть продукта.</span><span>08</span></div>
+</section>
+
+<section class="slide dotgrid">
+  <div class="kicker">08 · Моя позиция</div><h2>Мы переходим от AI-first к agent-operated</h2>
+  <div class="grid3">
+    <div class="card"><strong>AI-first</strong><p>Каждая новая задача сначала рассматривается вместе с AI.</p></div>
+    <div class="card"><strong>Agent-ready</strong><p>Контекст, инструкции, данные и инструменты организованы для исполнения.</p></div>
+    <div class="card"><strong>Agent-operated</strong><p>Регулярные контуры работают сами, человек управляет исключениями и целями.</p></div>
+  </div>
+  <div class="band">Конкурентное преимущество — не подписка на модель. Это <u>операционная система компании</u>.</div>
+  <div class="sticky blue" style="right:.45in;top:.55in">COMPANY<br>AI OS</div>
+  <div class="footer"><span>Организация должна стать читаемой и исполнимой.</span><span>09</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">09 · Что делать в понедельник</div><h2>Начать с одного рабочего контура за 7 дней</h2>
+  <div class="grid3">
+    <div class="card"><div class="big-number">1</div><p><b>Выберите</b> частую задачу с понятным владельцем и результатом.</p></div>
+    <div class="card"><div class="big-number">2</div><p><b>Дайте контекст:</b> источники истины, примеры, ограничения, права.</p></div>
+    <div class="card"><div class="big-number">3</div><p><b>Опишите приёмку:</b> как агент и человек докажут, что работа сделана.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:.22in">
+    <div class="card"><strong>Сначала</strong><p>режим помощника и прозрачный черновик.</p></div>
+    <div class="card"><strong>Потом</strong><p>автоматизация повторяемых шагов и управление исключениями.</p></div>
+  </div>
+  <div class="footer"><span>Не трансформация на год. Один доказанный цикл.</span><span>10</span></div>
+</section>
+
+<section class="slide dotgrid">
+  <div class="kicker">10 · Кто говорит</div><h2>Данил Письменный</h2>
+  <p class="lead">Предприниматель и ТехРук цифровых продуктов. Помогаю командам внедрять AI-агентов в разработку и управленческие процессы.</p>
+  <div class="grid2">
+    <div class="card"><strong>Создавал продукты</strong><p>Интернет-провайдер; KIIIOSK.STORE с оборотом товаров 2 млрд ₽; CTO криптобиржи с оборотом до $1 млрд.</p></div>
+    <div class="card"><strong>Масштабировал delivery</strong><p>В Самокате руководил продуктом ВКС для 35 000 сотрудников и увеличил частоту релизов в 30 раз за полгода.</p></div>
+  </div>
+  <div class="sticky" style="right:.55in;bottom:.7in">30 ЛЕТ<br>В IT</div>
+  <div class="footer"><span>Практика: от кода до операционной системы компании.</span><span>11</span></div>
+</section>
+
+<section class="slide">
+  <div class="final">
+    <div><div class="kicker">Спасибо</div><h1>Вопросы?</h1><div class="url">pismenny.ru</div><p class="lead" style="font-size:17pt">Материалы, практика агентной разработки и способы связи.</p></div>
+    <div><img class="qr" src="assets/qr-pismenny.png" alt="QR-код pismenny.ru"><p class="small" style="margin-top:.12in;text-align:center">Открыть сайт</p></div>
+  </div>
+  <div class="sticky blue" style="right:3.1in;top:.65in">ДЕЛАТЬ.<br>ПРОВЕРЯТЬ.<br>УЛУЧШАТЬ.</div>
+  <div class="footer"><span>Данил Письменный</span><span>12</span></div>
+</section>
+</main></body></html>

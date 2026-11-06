@@ -1,0 +1,14 @@
+{
+  "name": "ai-landscape-it-park-2026",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Слайды доклада Данила Письменного «AI-ландшафт и где мы сейчас» для IT Park, 6 ноября 2026",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "npx serve ."
+  },
+  "dependencies": {
+    "playwright": "^1.58.0",
+    "qrcode": "^1.5.4"
+  }
+}
