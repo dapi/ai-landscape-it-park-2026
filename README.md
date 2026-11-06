@@ -22,5 +22,9 @@ npm run build:all
 3. [Anthropic Economic Index](https://anthropic.com/research/economic-index-geography)
 4. [OpenAI Agents API](https://developers.openai.com/api/docs/guides/agents)
 5. [Model Context Protocol](https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro)
+6. [Anthropic: How we built our multi-agent research system](https://www.anthropic.com/research/multi-agent-research-system)
+7. [Google: Agent2Agent Protocol](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability)
+8. [Microsoft Work Trend Index 2025: The Frontier Firm](https://www.microsoft.com/en-us/worklab/work-trend-index/2025-the-year-the-frontier-firm-is-born)
+9. [OpenAI: From assistance to execution](https://openai.com/index/how-enterprises-put-ai-to-work/)
 
 © 2026 Данил Письменный. Материалы доклада доступны для просмотра и цитирования со ссылкой на автора.
