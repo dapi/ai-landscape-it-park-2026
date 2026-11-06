@@ -5,6 +5,8 @@
   "description": "Слайды доклада Данила Письменного «AI-ландшафт и где мы сейчас» для IT Park, 6 ноября 2026",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:business": "node scripts/build.mjs --business",
+    "build:all": "npm run build && npm run build:business",
     "serve": "npx serve ."
   },
   "dependencies": {

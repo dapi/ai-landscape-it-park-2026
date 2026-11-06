@@ -2,18 +2,18 @@
 
 Слайды доклада Данила Письменного для IT Park, Казань, 6 ноября 2026.
 
-- [Открыть слайды в браузере](slides.html)
-- [Скачать PDF](dist/danil-pismenny-ai-landscape-it-park-2026.pdf)
+- **Оригинальный вариант:** [открыть HTML](slides.html) · [скачать PDF](dist/danil-pismenny-ai-landscape-it-park-2026.pdf)
+- **Бизнес-вариант для участников Сколково MBA:** [открыть HTML](slides-business.html) · [скачать PDF](dist/danil-pismenny-ai-landscape-business-mba-it-park-2026.pdf)
 - Сайт спикера: [pismenny.ru](https://pismenny.ru/)
 
 ## Сборка
 
 ```bash
 npm install
-npm run build
+npm run build:all
 ```
 
-Исходник — один HTML-файл формата 16:9. Скрипт создаёт QR-код, PDF и PNG-превью всех слайдов.
+Два исходника — самостоятельные HTML-файлы формата 16:9. Скрипт создаёт QR-код, PDF и PNG-превью всех слайдов.
 
 ## Источники
 

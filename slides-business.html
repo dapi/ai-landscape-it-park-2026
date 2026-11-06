@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI-ландшафт и где мы сейчас — Данил Письменный</title>
+<style>
+@page { size: 13.333in 7.5in; margin: 0; }
+* { box-sizing: border-box; }
+:root { --ink:#17212b; --body:#2f3b47; --muted:#637083; --paper:#f7f6f2; --surface:#fff; --line:#d8d4c6; --blue:#1f4d7a; --blue2:#45688d; --signal:#b3492f; --yellow:#ffeb79; --green:#526e5b; }
+html,body { margin:0; background:#ddd; color:var(--ink); font-family:"Public Sans","Helvetica Neue",Arial,sans-serif; }
+.deck { display:block; }
+.slide { width:13.333in; height:7.5in; position:relative; overflow:hidden; background:var(--paper); page-break-after:always; padding:.62in .68in .55in; }
+.slide:last-child { page-break-after:auto; }
+@media screen { .slide { margin:20px auto; box-shadow:0 10px 40px #0002; } }
+h1,h2,h3,p { margin:0; }
+h1,h2 { font-family:"IBM Plex Mono","SFMono-Regular",Menlo,monospace; letter-spacing:-.045em; line-height:.98; }
+h1 { font-size:48pt; max-width:10.8in; }
+h2 { font-size:32pt; max-width:11.2in; }
+h3 { font:700 13pt "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.04em; }
+.kicker { font:700 10pt "IBM Plex Mono",monospace; color:var(--blue2); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.22in; }
+.lead { font-size:21pt; line-height:1.22; max-width:10.5in; color:var(--body); margin-top:.28in; }
+.small { font-size:10pt; line-height:1.35; color:var(--muted); }
+.footer { position:absolute; left:.68in; right:.68in; bottom:.25in; display:flex; justify-content:space-between; font:9pt "IBM Plex Mono",monospace; color:var(--muted); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:.28in; margin-top:.38in; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:.22in; margin-top:.35in; }
+.card { background:rgba(255,255,255,.88); border:1.5px solid var(--line); padding:.24in; min-height:1.35in; position:relative; }
+.card strong { font:700 18pt "IBM Plex Mono",monospace; display:block; margin-bottom:.1in; }
+.card p { font-size:13.5pt; line-height:1.28; color:var(--body); }
+.big-number { font:700 42pt "IBM Plex Mono",monospace; color:var(--blue); letter-spacing:-.06em; }
+.band { margin-top:.34in; padding:.25in .3in; border-left:8px solid var(--signal); background:#fff; font-size:22pt; line-height:1.18; font-weight:750; max-width:10.8in; }
+.sticky { position:absolute; width:1.62in; min-height:1.18in; padding:.16in; background:var(--yellow); box-shadow:0 8px 18px #17212b20; transform:rotate(-4deg); font:700 10pt/1.22 "IBM Plex Mono",monospace; color:var(--ink); overflow-wrap:anywhere; }
+.sticky.blue { background:#cfe3f5; transform:rotate(5deg); }
+.sticky.red { background:#f1c7b9; transform:rotate(-2deg); }
+.sticky.green { background:#d5e5d8; transform:rotate(3deg); }
+.card .sticky { bottom:-.42in; top:auto; min-height:.52in; width:1.25in; padding:.1in; font-size:9pt; text-align:center; }
+.doodle { position:absolute; opacity:.92; }
+.arrow { width:1.2in; height:.55in; border-bottom:4px solid var(--ink); transform:rotate(-8deg); }
+.arrow:after { content:""; position:absolute; right:-1px; bottom:-7px; width:16px; height:16px; border-right:4px solid var(--ink); border-bottom:4px solid var(--ink); transform:rotate(-45deg); }
+.dotgrid { background-image:radial-gradient(#17212b24 1.1px,transparent 1.1px); background-size:16px 16px; }
+.ladder { display:grid; grid-template-columns:repeat(5,1fr); gap:.12in; margin-top:.42in; align-items:end; }
+.step { border:2px solid var(--ink); padding:.16in; background:#fff; min-height:1.25in; }
+.step:nth-child(2){min-height:1.55in}.step:nth-child(3){min-height:1.85in}.step:nth-child(4){min-height:2.15in}.step:nth-child(5){min-height:2.45in;background:#e7eef5}
+.step b { display:block; font:700 14pt "IBM Plex Mono",monospace; margin-bottom:.08in; }
+.step span { font-size:10.5pt; line-height:1.25; color:var(--body); }
+.stack { margin-top:.35in; display:grid; grid-template-columns:1.15fr 1fr; gap:.35in; }
+.stackline { display:flex; align-items:center; gap:.16in; margin-bottom:.12in; }
+.stackline b { width:1.55in; font:700 12pt "IBM Plex Mono",monospace; }
+.stackline span { flex:1; background:#fff; border:1.5px solid var(--line); padding:.13in .17in; font-size:12pt; }
+.warning { background:#17212b; color:white; }
+.warning h2,.warning .kicker { color:white; }
+.warning .card { background:#222d38; border-color:#52606d; color:#fff; }
+.warning .card p { color:#dbe2e9; }
+.warning .footer { color:#aeb8c2; }
+.quote { font:700 29pt/1.12 "IBM Plex Mono",monospace; max-width:10.8in; margin-top:.46in; }
+.source { position:absolute; left:.68in; bottom:.55in; font-size:8.5pt; color:var(--muted); max-width:11.7in; }
+.checks { display:grid; grid-template-columns:repeat(3,1fr); gap:.2in; margin-top:.38in; }
+.check { border-top:5px solid var(--green); padding:.18in .12in; background:white; min-height:1.55in; }
+.check b { font:700 15pt "IBM Plex Mono",monospace; display:block; margin-bottom:.08in; }
+.check p { font-size:12pt; line-height:1.3; }
+.qr { width:2.05in; height:2.05in; background:#fff; padding:.1in; border:2px solid var(--ink); }
+.final { display:grid; grid-template-columns:1fr 2.45in; align-items:center; height:100%; gap:.6in; }
+.final h1 { font-size:64pt; }
+.final .url { font:700 18pt "IBM Plex Mono",monospace; margin-top:.28in; color:var(--blue); }
+.brandline { position:absolute; left:.68in; top:.26in; width:1.2in; height:5px; background:var(--blue); }
+</style>
+</head>
+<body><main class="deck">
+<section class="slide dotgrid">
+  <div class="brandline"></div><div class="kicker">Сколково MBA · IT Park · 6 ноября 2026</div>
+  <h1>AI-ландшафт<br>для бизнеса</h1>
+  <p class="lead" style="max-width:8.2in">Что уже можно делегировать, где появляется экономический эффект<br>и как выбрать первый процесс без ставки на магию.</p>
+  <div class="sticky" style="right:.65in;top:.7in">НЕ ПРО AI.<br>ПРО РЕЗУЛЬТАТ.</div>
+  <div class="sticky blue" style="right:1.05in;top:2.25in">ВЫРУЧКА<br>ЗАТРАТЫ<br>РИСК</div>
+  <div class="sticky green" style="right:.55in;top:3.85in">ОДИН<br>РАБОЧИЙ ЦИКЛ</div>
+  <div class="footer"><span>Данил Письменный · предприниматель и ТехРук</span><span>01</span></div>
+</section>
+
+<section class="slide dotgrid">
+  <div class="kicker">Спикер</div><h2>Данил Письменный</h2>
+  <p class="lead">Предприниматель и ТехРук цифровых продуктов. Внедряю AI-агентов в разработку, управление и регулярные бизнес-процессы.</p>
+  <div class="grid2">
+    <div class="card"><strong>Строил бизнес и продукты</strong><p>Интернет-провайдер; KIIIOSK.STORE с оборотом товаров 2 млрд ₽; CTO криптобиржи с оборотом до $1 млрд.</p></div>
+    <div class="card"><strong>Масштабировал delivery</strong><p>В Самокате руководил продуктом ВКС для 35 000 сотрудников и увеличил частоту релизов в 30 раз за полгода.</p></div>
+  </div>
+  <div class="sticky" style="right:.55in;bottom:.7in">30 ЛЕТ<br>В IT</div>
+  <div class="footer"><span>Практика: от идеи до работающего операционного контура.</span><span>02</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">01 · Картина одним слайдом</div><h2>Интеллект дешевеет. Действие становится доступным. Ответственность остаётся у бизнеса.</h2>
+  <div class="grid3">
+    <div class="card"><strong>Модели</strong><p>Уже умеют читать, считать, писать, анализировать документы, код и изображения.</p></div>
+    <div class="card"><strong>Инструменты</strong><p>Агент получает браузер, файлы, CRM, таблицы и может выполнить работу.</p></div>
+    <div class="card"><strong>Контроль</strong><p>Ошибка теперь влияет не только на текст, но и на данные, клиента, деньги и доступы.</p></div>
+  </div>
+  <div class="band">AI становится новой производственной мощностью — но её нужно встроить в процесс.</div>
+  <div class="footer"><span>Технология уже здесь. Управленческая модель ещё формируется.</span><span>03</span></div>
+</section>
+
+<section class="slide dotgrid">
+  <div class="kicker">02 · Три режима для компании</div><h2>Три уровня: помощник, workflow, агент</h2>
+  <div class="ladder" style="grid-template-columns:repeat(3,1fr)">
+    <div class="step" style="min-height:1.65in"><b>1. Помощник</b><span>Готовит анализ, письмо, варианты решения. Человек переносит результат и действует.</span></div>
+    <div class="step" style="min-height:2.05in"><b>2. Workflow</b><span>AI встроен в повторяемую цепочку: вход → обработка → проверка → выход.</span></div>
+    <div class="step" style="min-height:2.45in;background:#e7eef5"><b>3. Агент</b><span>Сам планирует шаги и использует инструменты в заданных границах. Человек принимает исключения.</span></div>
+  </div>
+  <p class="lead" style="font-size:18pt">Правильная автономность — минимальная, достаточная для результата.</p>
+  <div class="sticky blue" style="right:.5in;top:.68in;width:1.72in;font-size:9pt">ДОСТАТОЧНАЯ<br>АВТОНОМНОСТЬ</div>
+  <div class="footer"><span>Начните с прозрачного помощника, масштабируйте доказанное.</span><span>04</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">03 · Где появляется ценность</div><h2>Бизнес платит не за AI, а за изменение показателя</h2>
+  <div class="checks">
+    <div class="check"><b>Выручка</b><p>Больше обработанных возможностей, выше конверсия, быстрее выход продукта.</p></div>
+    <div class="check"><b>Маржа</b><p>Меньше ручных операций, переделок и стоимости одного результата.</p></div>
+    <div class="check"><b>Скорость</b><p>Сокращение цикла решения, подготовки предложения или выпуска изменения.</p></div>
+    <div class="check"><b>Качество</b><p>Единый стандарт, проверка полноты, меньше пропущенных условий.</p></div>
+    <div class="check"><b>Риск</b><p>Раннее обнаружение отклонений, обязательные контрольные точки и журнал.</p></div>
+    <div class="check"><b>Масштаб</b><p>Лучший способ работы становится доступен всей команде, а не одному эксперту.</p></div>
+  </div>
+  <div class="footer"><span>Метрика процесса важнее рейтинга модели.</span><span>05</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">04 · Выбор первого процесса</div><h2>Хороший пилот находится на пересечении четырёх условий</h2>
+  <div class="grid2">
+    <div class="card"><strong>Повторяемость</strong><p>Задача возникает регулярно, а не раз в год.</p></div>
+    <div class="card"><strong>Доступный контекст</strong><p>Есть документы, данные, примеры и человек, который знает норму.</p></div>
+    <div class="card"><strong>Проверяемый выход</strong><p>Можно заранее сказать, что считается хорошим результатом.</p></div>
+    <div class="card"><strong>Ограниченный риск</strong><p>Ошибку можно увидеть, остановить и исправить без необратимых последствий.</p></div>
+  </div>
+  <div class="band">Не начинайте с «внедрить AI». Начните с глагола: проверить, собрать, сравнить, подготовить.</div>
+  <div class="footer"><span>У процесса должен быть владелец и критерий приёмки.</span><span>06</span></div>
+</section>
+
+<section class="slide dotgrid">
+  <div class="kicker">05 · Контекст сегодняшней группы</div><h2>Задачи, которые уже звучали на программе</h2>
+  <div class="grid2">
+    <div class="card"><strong>Данные и объекты</strong><p>Собрать сведения из разных источников, сравнить объекты, увидеть отклонения.</p></div>
+    <div class="card"><strong>Клиентские предложения</strong><p>Подготовить предложение по справочнику, требованиям и истории отношений.</p></div>
+    <div class="card"><strong>Большие документы</strong><p>Ускорить разбор отчётов и договоров, не потеряв проверку интерпретации.</p></div>
+    <div class="card"><strong>Продажи и запасы</strong><p>Найти причины динамики, сегментировать сделки и подготовить решение руководителя.</p></div>
+  </div>
+  <div class="band">Общий знаменатель: превратить разовую помощь AI в повторяемый сценарий для команды.</div>
+  <div class="footer"><span>Программирование — средство, а не цель программы.</span><span>07</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">06 · Экономика пилота</div><h2>Освободившиеся часы ещё не равны экономии</h2>
+  <div class="grid3">
+    <div class="card"><div class="big-number">До</div><p>Зафиксируйте время, стоимость, качество, потери и число операций.</p></div>
+    <div class="card"><div class="big-number">После</div><p>Измерьте тот же цикл с AI и обязательной человеческой проверкой.</p></div>
+    <div class="card"><div class="big-number">Эффект</div><p>Считайте только реализованную экономию, дополнительную маржу и предотвращённые потери.</p></div>
+  </div>
+  <div class="band">Эффект = выгода − модели − интеграция − поддержка − проверка человеком.</div>
+  <div class="sticky red" style="right:.5in;bottom:.75in">ЧАСЫ<br>≠ ДЕНЬГИ</div>
+  <div class="footer"><span>Заранее решите, куда пойдёт освобождённая мощность.</span><span>08</span></div>
+</section>
+
+<section class="slide warning">
+  <div class="kicker">07 · Управление риском</div><h2>Чем больше полномочий — тем жёстче контур контроля</h2>
+  <div class="grid3">
+    <div class="card"><strong>Данные</strong><p>Что можно читать, что нельзя передавать, где лежат секреты и персональные данные.</p></div>
+    <div class="card"><strong>Действия</strong><p>Что агент делает сам, а что требует отдельного подтверждения человека.</p></div>
+    <div class="card"><strong>Восстановление</strong><p>Как увидеть изменение, остановить выполнение и вернуть прежнее состояние.</p></div>
+  </div>
+  <div class="band" style="color:var(--ink)">Платёж · внешняя отправка · удаление · изменение доступа — только через явный контроль.</div>
+  <div class="footer"><span>Безопасность — не запрет. Это управляемая возможность действовать.</span><span>09</span></div>
+</section>
+
+<section class="slide dotgrid">
+  <div class="kicker">08 · Готовность организации</div><h2>Успех пилота зависит не только от модели</h2>
+  <div class="stack">
+    <div>
+      <div class="stackline"><b>Владелец</b><span>кто отвечает за показатель и принимает результат</span></div>
+      <div class="stackline"><b>Источник истины</b><span>где актуальные данные, правила и решения</span></div>
+      <div class="stackline"><b>Эталон</b><span>пример хорошего входа и ожидаемого выхода</span></div>
+      <div class="stackline"><b>Права</b><span>минимальный доступ, достаточный для задачи</span></div>
+      <div class="stackline"><b>Обратная связь</b><span>ошибки возвращаются в процесс, а не скрываются вручную</span></div>
+    </div>
+    <div class="card"><strong>Главный актив</strong><p>Компания, которая умеет описывать свою работу, быстрее превращает новые модели в результат.</p></div>
+  </div>
+  <div class="footer"><span>AI усиливает качество операционной системы компании.</span><span>10</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">09 · Задание на сегодня</div><h2>Выберите один процесс, который стоит принести в практику</h2>
+  <div class="grid3">
+    <div class="card"><div class="big-number">1</div><p><b>Вход:</b> что получает сотрудник или агент в начале?</p></div>
+    <div class="card"><div class="big-number">2</div><p><b>Результат:</b> какой артефакт или решение должно появиться?</p></div>
+    <div class="card"><div class="big-number">3</div><p><b>Проверка:</b> как эксперт поймёт, что результат пригоден?</p></div>
+  </div>
+  <div class="grid2" style="margin-top:.22in">
+    <div class="card"><strong>Роль AI</strong><p>Что он анализирует, создаёт или делает инструментами?</p></div>
+    <div class="card"><strong>Роль человека</strong><p>Где решение, ответственность и разрешение на действие?</p></div>
+  </div>
+  <div class="footer"><span>К воскресенью: прототип, обратная связь и следующий шаг внедрения.</span><span>11</span></div>
+</section>
+
+<section class="slide">
+  <div class="final">
+    <div><div class="kicker">Спасибо</div><h1>Вопросы?</h1><div class="url">pismenny.ru</div><p class="lead" style="font-size:17pt">Материалы, практика агентной разработки и способы связи.</p></div>
+    <div><img class="qr" src="assets/qr-pismenny.png" alt="QR-код pismenny.ru"><p class="small" style="margin-top:.12in;text-align:center">Открыть сайт</p></div>
+  </div>
+  <div class="sticky blue" style="right:3.1in;top:.65in">ОДИН ПРОЦЕСС.<br>ОДИН ЦИКЛ.<br>ОДИН ФАКТ.</div>
+  <div class="footer"><span>Данил Письменный</span><span>12</span></div>
+</section>
+</main></body></html>
